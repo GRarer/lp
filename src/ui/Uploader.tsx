@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from '@material-ui/core';
+import { readSpreadsheet } from "../service/parse";
 
 export default class Uploader extends React.Component<{}> {
   fileInput: React.RefObject<HTMLInputElement>;
@@ -11,6 +12,18 @@ export default class Uploader extends React.Component<{}> {
   handleSubmit() {
     const file = this.fileInput.current?.files?.[0];
     console.log(file);
+    if (!file) {
+      alert("file not found!"); // TODO in-app modal instead of alert
+      return;
+    }
+    file.arrayBuffer().then((buffer) => {
+      const records = readSpreadsheet(buffer);
+      console.log(records);
+      // TODO propagate result upwards
+    }).catch((err) => {
+      // TODO better error handing;
+      console.error(err);
+    })
   }
 
   render() {
