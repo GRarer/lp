@@ -1,11 +1,16 @@
 import React from "react";
 import { Button } from '@material-ui/core';
 import { readSpreadsheet } from "../service/parse";
+import { RecordLabel } from "../service/model";
 
-export default class Uploader extends React.Component<{}> {
+type UploaderProps = {
+  onUpload: (items: RecordLabel[]) => void
+}
+
+export default class Uploader extends React.Component<UploaderProps> {
   fileInput: React.RefObject<HTMLInputElement>;
 
-  constructor(props: {}) {
+  constructor(props: Readonly<UploaderProps>) {
     super(props);
     this.fileInput = React.createRef();
   }
@@ -18,8 +23,7 @@ export default class Uploader extends React.Component<{}> {
     }
     file.arrayBuffer().then((buffer) => {
       const records = readSpreadsheet(buffer);
-      console.log(records);
-      // TODO propagate result upwards
+      this.props.onUpload(records);
     }).catch((err) => {
       // TODO better error handing;
       console.error(err);
