@@ -16,8 +16,8 @@ ReactDOM.render(
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
     {
       itemFromUrl
-      ? <Label item={itemFromUrl}/> // display label page instead of app if an item was specified in url params
-      : <App/>
+        ? <Label item={itemFromUrl} /> // display label page instead of app if an item was specified in url params
+        : <App />
     }
   </React.StrictMode>,
   document.getElementById('root'),

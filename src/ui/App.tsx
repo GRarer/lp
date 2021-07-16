@@ -12,6 +12,7 @@ const fakeData: RecordLabel[] = [
     artist: "Speedy Ortiz",
     title: "No Below",
     releaseDate: "2013",
+    score: "3.5",
     _uuid: "1"
   },
   {
@@ -82,6 +83,8 @@ export default class App extends React.Component<{}, {step: AppStep}> {
     return (
       <div>
         <LPAppBar/>
+        <p>{"\u2605 \u2BEA  \u2606"}</p>
+        <p>◖◐</p>
         <Container maxWidth="sm">
           {currentStepControl}
         </Container>

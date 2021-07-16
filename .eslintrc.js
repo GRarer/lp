@@ -27,7 +27,8 @@ module.exports = {
     '@typescript-eslint/no-use-before-define': ['error'],
     // tsc doesn't like file extensions on imports
     'import/extensions': 'off',
-    'no-unused-vars': 1
+    'no-unused-vars': 1,
+    'max-len': [1, {code: 120}]
   },
   settings: {
     'import/resolver': {
