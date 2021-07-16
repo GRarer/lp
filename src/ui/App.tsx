@@ -4,6 +4,7 @@ import Uploader from './Uploader';
 import { Container } from '@material-ui/core';
 import { RecordLabel } from '../service/model';
 import { Selector } from './Selector';
+import { openItemInNewTab } from '../service/url';
 
 // TODO remove fake data
 const fakeData: RecordLabel[] = [
@@ -31,6 +32,20 @@ const fakeData: RecordLabel[] = [
     releaseDate: "2015",
     _uuid: "100"
   },
+  {
+    artist: "Boston",
+    acquisition: "6/22/21",
+    discogsLog: "Yes",
+    genre: "Rock",
+    notes: "Per Wikipedia … “All eight songs—most commonly the album's A-side—are in constant rotation on classic rock radio.”",
+    price: "$23.69",
+    releaseDate: "1976",
+    score: "5",
+    source: "New - Barnes & Nobel",
+    thoughts: "It is my favorite album and the album I used to teach myself to play the drums. ",
+    title: "Boston - 2021 Reissue",
+    _uuid: "c1a97d4f-8c27-4f44-a839-5acb408c931a",
+  }
 ]
 
 type AppStep = {
@@ -45,7 +60,6 @@ export default class App extends React.Component<{}, {step: AppStep}> {
     super(props);
 
     this.handleUpload = this.handleUpload.bind(this);
-    this.handleSelectItem = this.handleSelectItem.bind(this);
 
     this.state = {step: { step: "upload" }};
 
@@ -59,17 +73,11 @@ export default class App extends React.Component<{}, {step: AppStep}> {
     });
   }
 
-  private handleSelectItem(item: RecordLabel): void {
-    // TODO show item's label page
-    console.log(item);
-  }
-
-
   render(): JSX.Element {
     const currentStep = this.state.step;
     const currentStepControl = currentStep.step === "upload"
       ? <Uploader onUpload={this.handleUpload}/>
-      : <Selector items={currentStep.items} onSelect={this.handleSelectItem}/>
+      : <Selector items={currentStep.items} onSelect={openItemInNewTab}/>
 
     return (
       <div>

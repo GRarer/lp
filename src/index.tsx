@@ -3,12 +3,22 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './ui/App';
 import reportWebVitals from './reportWebVitals';
+import { getItemFromUrlParam } from './service/url';
+import { RecordLabel } from './service/model';
+import { Label } from './ui/Label';
+
+// check whether current tab is a label opened from another tab
+const itemFromUrl: RecordLabel | undefined = getItemFromUrlParam();
 
 ReactDOM.render(
   <React.StrictMode>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-    <App />
+    {
+      itemFromUrl
+      ? <Label item={itemFromUrl}/> // display label page instead of app if an item was specified in url params
+      : <App/>
+    }
   </React.StrictMode>,
   document.getElementById('root'),
 );
