@@ -83,8 +83,6 @@ export default class App extends React.Component<{}, {step: AppStep}> {
     return (
       <div>
         <LPAppBar/>
-        <p>{"\u2605 \u2BEA  \u2606"}</p>
-        <p>◖◐</p>
         <Container maxWidth="sm">
           {currentStepControl}
         </Container>

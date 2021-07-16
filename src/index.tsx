@@ -5,7 +5,7 @@ import App from './ui/App';
 import reportWebVitals from './reportWebVitals';
 import { getItemFromUrlParam } from './service/url';
 import { RecordLabel } from './service/model';
-import { Label } from './ui/Label';
+import { Label } from './ui/label/Label';
 
 // check whether current tab is a label opened from another tab
 const itemFromUrl: RecordLabel | undefined = getItemFromUrlParam();
