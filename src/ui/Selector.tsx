@@ -6,10 +6,13 @@ import ClearIcon from '@material-ui/icons/Clear';
 import FilledInput from '@material-ui/core/FilledInput';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
+import { ListIconOption } from "../service/customization";
+import { CustomListIcon } from "./CustomListIcon";
 
 type SelectorProps = {
     items: RecordLabel[],
-    onSelect: (item: RecordLabel) => void
+    onSelect: (item: RecordLabel) => void,
+    listIcon: ListIconOption,
 };
 
 type SelectorState = {
@@ -46,7 +49,9 @@ export class Selector extends React.Component<SelectorProps, SelectorState> {
                 onClick={()=>{this.props.onSelect(item)}}
                 key={item._uuid}
             >
-                <ListItemIcon><AlbumIcon/></ListItemIcon>
+                <ListItemIcon>
+                    <CustomListIcon icon={this.props.listIcon}/>
+                </ListItemIcon>
                 <ListItemText
                     primary={item.title ?? "unknown title"}
                     secondary={item.artist}

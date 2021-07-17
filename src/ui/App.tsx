@@ -1,10 +1,12 @@
 import React from 'react';
-import { LPAppBar } from './Menu';
+import { MenuBar } from './Menu';
 import Uploader from './Uploader';
 import { Container } from '@material-ui/core';
 import { RecordLabel } from '../service/model';
 import { Selector } from './Selector';
 import { openItemInNewTab } from '../service/url';
+import { defaultSettings, Settings } from '../service/customization';
+import { loadStoredSettings, saveStoredSettings } from '../service/persistence';
 
 // TODO remove fake data
 const fakeData: RecordLabel[] = [
@@ -56,16 +58,35 @@ type AppStep = {
   items: RecordLabel[],
 }
 
-export default class App extends React.Component<{}, {step: AppStep}> {
-  constructor(props: {}) {
+type AppState = {
+  step: AppStep,
+  settings: Settings,
+  showSettingsDialog: boolean
+}
+
+type AppProps = {
+  defaultSettings: Settings
+}
+
+export default class App extends React.Component<AppProps, AppState> {
+  constructor(props: Readonly<AppProps>) {
     super(props);
 
     this.handleUpload = this.handleUpload.bind(this);
+    this.updateSettings = this.updateSettings.bind(this);
 
-    this.state = {step: { step: "upload" }};
+    this.state = {
+      settings: props.defaultSettings,
+      showSettingsDialog: false,
+      // step: { step: "upload" }
+      // TODO remove fake data
+      step: {step: "select", items: fakeData}
+    };
+  }
 
-    // TODO remove fake data
-    this.state = {step: {step: "select", items: fakeData}};
+  private updateSettings(settings: Settings) {
+    this.setState({settings});
+    saveStoredSettings(settings);
   }
 
   private handleUpload(items: RecordLabel[]): void {
@@ -78,11 +99,11 @@ export default class App extends React.Component<{}, {step: AppStep}> {
     const currentStep = this.state.step;
     const currentStepControl = currentStep.step === "upload"
       ? <Uploader onUpload={this.handleUpload}/>
-      : <Selector items={currentStep.items} onSelect={openItemInNewTab}/>
+      : <Selector items={currentStep.items} onSelect={openItemInNewTab} listIcon={this.state.settings.listIcon}/>
 
     return (
       <div>
-        <LPAppBar/>
+        <MenuBar settings = {this.state.settings} onSaveSettings={this.updateSettings}/>
         <Container maxWidth="sm">
           {currentStepControl}
         </Container>
