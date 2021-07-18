@@ -11,6 +11,8 @@ import { CustomListIcon } from '../common/CustomListIcon';
 import Uploader from '../common/Uploader';
 import { fileToDataUrl } from '../../service/persistence';
 
+// TODO help dialog to explain spreadsheet format
+
 type SettingsEditorProps = {
   prevSettings: Settings;
   onSave: (settings: Settings) => void;

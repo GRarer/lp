@@ -10,7 +10,7 @@ import { formatScore } from './specialFormat';
 const valueFormats = {
   'text': (value: string) => value,
   'scoreOutOf5': (value: string) => formatScore(value, 5),
-  'scoreOutOf10': (value: string) => formatScore(value, 5),
+  'scoreOutOf10': (value: string) => formatScore(value, 10),
 };
 
 function labelRow(props: LabelAttribute): JSX.Element {

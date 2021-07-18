@@ -64,7 +64,7 @@ export class Selector extends React.Component<SelectorProps, SelectorState> {
           Select a label to print
         </Typography>
         <FormControl fullWidth variant="filled">
-          <InputLabel htmlFor="search-control">Search by Title or Artist</InputLabel>
+          <InputLabel htmlFor="search-control">Search</InputLabel>
           <FilledInput
             id="search-control"
             value={this.state.search}
