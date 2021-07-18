@@ -3,58 +3,37 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
-import { RecordLabel } from '../../service/model';
+import { LabelAttribute, LabelData } from '../../service/model';
 import './Label.css';
 import { formatScore } from './specialFormat';
 
-function labelRow(props: {name: string; value: string;}): JSX.Element {
-  const defaultValueCell = <TableCell>{props.value}</TableCell>;
+const valueFormats = {
+  'text': (value: string) => value,
+  'scoreOutOf5': (value: string) => formatScore(value, 5),
+  'scoreOutOf10': (value: string) => formatScore(value, 5),
+};
 
-  // special case for showing scores out of 5 as stars
-  const valueCell: JSX.Element = (props.name === 'Score')
-    ? (formatScore(props.value, 5) ?? defaultValueCell)
-    : defaultValueCell;
-
+function labelRow(props: LabelAttribute): JSX.Element {
   return (
-    <TableRow>
+    <TableRow key={props.uuid}>
       <TableCell>{props.name}</TableCell>
-      {valueCell}
+      <TableCell>{valueFormats[props.format](props.value)}</TableCell>
     </TableRow>
   );
 }
 
-function hasValue(row: {name: string; value: string | undefined;}): row is {name: string; value: string;} {
-  return !!(row.value?.trim());
-}
-
-export class Label extends React.Component<{item: RecordLabel; imageUrl?: string;}> {
+export class Label extends React.Component<{data: LabelData; imageUrl?: string;}> {
   render(): JSX.Element {
-    const image = this.props.imageUrl
+    const image: JSX.Element | undefined = this.props.imageUrl
       ? <img src={this.props.imageUrl} style={{ maxWidth: '2.5in' }} />
       : undefined;
 
-    const { item } = this.props;
-    const data: {name: string; value: string;}[] = [
-      { name: 'Title', value: item.title },
-      { name: 'Artist', value: item.artist },
-      { name: 'Release Date', value: item.releaseDate },
-      { name: 'Genre', value: item.genre },
-      { name: 'Acquisition', value: item.acquisition },
-      { name: 'Source', value: item.source },
-      { name: 'Price', value: item.price },
-      { name: 'Score', value: item.score },
-      { name: 'Thoughts', value: item.thoughts },
-      { name: 'Notes', value: item.notes },
-      { name: 'Discogs Log', value: item.discogsLog },
-    ].filter(hasValue);
-
     return (
-
       <div className="label">
         {image}
         <Table size="small">
           <TableBody>
-            {data.map((x) => labelRow(x))}
+            {this.props.data.attributes.map(labelRow)}
           </TableBody>
         </Table>
       </div>

@@ -2,69 +2,16 @@ import React from 'react';
 import { Container } from '@material-ui/core';
 import { MenuBar } from './Menu';
 import Uploader from './Uploader';
-import { RecordLabel } from '../service/model';
+import { LabelData } from '../service/model';
 import { Selector } from './Selector';
 import { openItemInNewTab } from '../service/url';
 import { Settings } from '../service/customization';
 import { saveStoredSettings } from '../service/persistence';
 import { readSpreadsheet } from '../service/parse';
 
-// TODO remove fake data
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const fakeData: RecordLabel[] = [
-  {
-    artist: 'Speedy Ortiz',
-    title: 'No Below',
-    releaseDate: '2013',
-    score: '3.5',
-    _uuid: '1',
-  },
-  {
-    artist: 'Watch You Sleep',
-    title: 'Girl in Red',
-    releaseDate: '2019',
-    _uuid: '9',
-  },
-  {
-    artist: 'Death with Dignity',
-    title: 'Sufjan Stevens',
-    releaseDate: '2015',
-    _uuid: '3',
-  },
-  {
-    artist: 'Before The World Was Big',
-    title: 'Girlpool',
-    releaseDate: '2015',
-    _uuid: '100',
-  },
-  {
-    artist: 'Boston',
-    acquisition: '6/22/21',
-    discogsLog: 'Yes',
-    genre: 'Rock',
-    notes: ('Per Wikipedia … “All eight songs—most commonly the '
-      + "album's A-side—are in constant rotation on classic rock radio.”"),
-    price: '$23.69',
-    releaseDate: '1976',
-    score: '5',
-    source: 'New - Barnes & Nobel',
-    thoughts: 'It is my favorite album and the album I used to teach myself to play the drums. ',
-    title: 'Boston - 2021 Reissue',
-    _uuid: 'c1a97d4f-8c27-4f44-a839-5acb408c931a',
-  },
-];
-
-type AppStep = {
-  step: 'upload';
-} | {
-  step: 'select';
-  items: RecordLabel[];
-};
-
 type AppState = {
-  step: AppStep;
+  items?: LabelData[];
   settings: Settings;
-  showSettingsDialog: boolean;
 };
 
 type AppProps = {
@@ -77,8 +24,7 @@ export default class App extends React.Component<AppProps, AppState> {
 
     this.state = {
       settings: props.defaultSettings,
-      showSettingsDialog: false,
-      step: { step: 'upload' },
+      items: undefined
       // TODO remove fake data
       // step: {step: "select", items: fakeData}
     };
@@ -91,9 +37,7 @@ export default class App extends React.Component<AppProps, AppState> {
 
   private handleUpload(file: File): void {
     file.arrayBuffer().then((buffer) => {
-      this.setState({
-        step: { step: 'select', items: readSpreadsheet(buffer) },
-      });
+      this.setState({ items: readSpreadsheet(buffer) });
     }).catch((err) => {
       // TODO better error handling
       console.error(err);
@@ -101,16 +45,16 @@ export default class App extends React.Component<AppProps, AppState> {
   }
 
   render(): JSX.Element {
-    const currentStep = this.state.step;
-    const currentStepControl = currentStep.step === 'upload'
-      ? (
-        <Uploader
-          onUpload={this.handleUpload.bind(this)}
-          accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-          text="Upload Spreadsheet"
-        />
-      )
-      : <Selector items={currentStep.items} onSelect={openItemInNewTab} listIcon={this.state.settings.listIcon} />;
+    const items = this.state.items;
+    const currentStepControl = items
+      ?
+      <Selector items={items} onSelect={openItemInNewTab} listIcon={this.state.settings.listIcon} />
+      :
+      <Uploader
+        onUpload={this.handleUpload.bind(this)}
+        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        text="Upload Spreadsheet"
+      />;
 
     return (
       <div>
@@ -119,7 +63,6 @@ export default class App extends React.Component<AppProps, AppState> {
           <div style={{ marginTop: '10px' }}>
             {currentStepControl}
           </div>
-
         </Container>
       </div>
     );

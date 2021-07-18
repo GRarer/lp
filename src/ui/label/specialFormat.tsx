@@ -1,10 +1,9 @@
-import { TableCell } from '@material-ui/core';
 import StarIcon from '@material-ui/icons/Star';
 import StarHalfIcon from '@material-ui/icons/StarHalf';
 import StarOutlineIcon from '@material-ui/icons/StarOutline';
 import React from 'react';
 
-export function formatScore(score: string, outOf: number): JSX.Element | undefined {
+export function formatScore(score: string, outOf: number): JSX.Element {
   let n = Number.parseFloat(score);
   if (
     Number.isNaN(n)
@@ -12,7 +11,8 @@ export function formatScore(score: string, outOf: number): JSX.Element | undefin
         || (n < 0)
         || (n > outOf)
   ) {
-    return;
+    // fall back to just displaying the value if it isn't a valid score in the range
+    return <>{score}</>;
   }
 
   const stars: JSX.Element[] = [];
@@ -33,8 +33,6 @@ export function formatScore(score: string, outOf: number): JSX.Element | undefin
     );
   }
   return (
-    <TableCell>
-      {stars}
-    </TableCell>
+    <>{stars}</>
   );
 }

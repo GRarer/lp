@@ -1,25 +1,43 @@
 import { v4 as generateUUID } from 'uuid';
 import XLSX from 'xlsx';
-import { MikeSpreadsheetRow, RecordLabel } from './model';
+import { LabelAttribute, LabelAttributeFormat, LabelData, MikeSpreadsheetRow } from './model';
 
-function mikeToRecord(row: MikeSpreadsheetRow): RecordLabel {
+
+function makeAttr(name: string, value: string | undefined, format?: LabelAttributeFormat): LabelAttribute | undefined {
+  if (!value?.trim()) {
+    return undefined;
+  }
   return {
-    artist: row.Artist,
-    title: row.Title,
-    releaseDate: row.Year,
-    genre: row.Genre,
-    acquisition: row['Purch. Date'],
-    source: row.Source,
-    price: row.Price,
-    score: row.Score,
-    thoughts: row.Thoughts,
-    notes: row['Notes & Oddities'],
-    discogsLog: row['Discogs Log'],
-    _uuid: generateUUID(),
+    name, value, format: (format ?? 'text'), uuid: generateUUID()
   };
 }
 
-export function readSpreadsheet(fileContents: ArrayBuffer): RecordLabel[] {
+// TODO replace with a more generic customizable solution
+function mikeToRecord(row: MikeSpreadsheetRow): LabelData {
+
+  const attributes = [
+    makeAttr('Title', row.Title),
+    makeAttr('Artist', row.Artist),
+    makeAttr('Release Date', row.Year),
+    makeAttr('Genre', row.Genre),
+    makeAttr('Acquisition', row['Purch. Date']),
+    makeAttr('Source', row.Source),
+    makeAttr('Price', row.Price),
+    makeAttr('Score', row.Score, 'scoreOutOf5'),
+    makeAttr('Thoughts', row.Thoughts),
+    makeAttr('Notes', row['Notes & Oddities']),
+    makeAttr('Discogs Log', row['Discogs Log']),
+  ].filter((a): a is LabelAttribute => (typeof a !== 'undefined'));
+
+  return {
+    title: row.Title ?? '⚠️ unknown',
+    subtitle: row.Artist,
+    attributes,
+    uuid: generateUUID(),
+  };
+}
+
+export function readSpreadsheet(fileContents: ArrayBuffer): LabelData[] {
   // extract data rows from excel file
   const workbook = XLSX.read(fileContents, { type: 'array' });
   const mainSheet = workbook.Sheets[workbook.SheetNames[0]];

@@ -13,17 +13,19 @@ export type MikeSpreadsheetRow = {
   'Year'?: string;
 };
 
-export type RecordLabel = {
-  artist?: string;
-  title?: string;
-  releaseDate?: string;
-  genre?: string;
-  acquisition?: string;
-  source?: string;
-  price?: string;
-  score?: string;
-  thoughts?: string;
-  notes?: string;
-  discogsLog?: string;
-  _uuid: string; // each row is assigned a permanent UUID when it is parsed, for use as react element key
+export type LabelAttributeFormat = 'text' | 'scoreOutOf5' | 'scoreOutOf10';
+export const labelAttributeOptions: LabelAttributeFormat[] = ['text', 'scoreOutOf5', 'scoreOutOf10'];
+
+export type LabelAttribute = {
+  name: string;
+  value: string;
+  format: LabelAttributeFormat;
+  uuid: string;
+};
+
+export type LabelData = {
+  title: string;
+  subtitle?: string;
+  attributes: LabelAttribute[];
+  uuid: string;
 };

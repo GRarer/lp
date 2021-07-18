@@ -6,13 +6,13 @@ import ClearIcon from '@material-ui/icons/Clear';
 import FilledInput from '@material-ui/core/FilledInput';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
-import { RecordLabel } from '../service/model';
+import { LabelData } from '../service/model';
 import { ListIconOption } from '../service/customization';
 import { CustomListIcon } from './CustomListIcon';
 
 type SelectorProps = {
-  items: RecordLabel[];
-  onSelect: (item: RecordLabel) => void;
+  items: LabelData[];
+  onSelect: (item: LabelData) => void;
   listIcon: ListIconOption;
 };
 
@@ -29,16 +29,12 @@ export class Selector extends React.Component<SelectorProps, SelectorState> {
     };
   }
 
-  private itemMatchesSearch(item: RecordLabel): boolean {
+  private itemMatchesSearch(item: LabelData): boolean {
     const search = this.state.search.toLowerCase();
-    console.log(search);
     if (search === '') {
-      console.log('no search');
       return true;
     }
-    const matchesTitle = item.title?.toLowerCase().includes(search) ?? false;
-    const matchesArtist = item.artist?.toLowerCase().includes(search) ?? false;
-    return matchesTitle || matchesArtist;
+    return item.attributes.some(attribute => attribute.value.toLowerCase().includes(search));
   }
 
   render(): JSX.Element {
@@ -48,14 +44,14 @@ export class Selector extends React.Component<SelectorProps, SelectorState> {
         divider
         dense
         onClick={() => { this.props.onSelect(item); }}
-        key={item._uuid}
+        key={item.uuid}
       >
         <ListItemIcon>
           <CustomListIcon icon={this.props.listIcon} />
         </ListItemIcon>
         <ListItemText
-          primary={item.title ?? 'unknown title'}
-          secondary={item.artist}
+          primary={item.title}
+          secondary={item.subtitle}
         />
       </ListItem>
     ));

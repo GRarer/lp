@@ -1,8 +1,8 @@
-import { RecordLabel } from './model';
+import { LabelData, } from './model';
 
 const itemUUIDSearchKey = 'item';
 
-export function getItemFromUrlParam(): RecordLabel | undefined {
+export function getItemFromUrlParam(): LabelData | undefined {
   const urlSearch = new URLSearchParams(window.location.search);
   const uuid = urlSearch.get(itemUUIDSearchKey);
   if (!uuid) {
@@ -16,8 +16,8 @@ export function getItemFromUrlParam(): RecordLabel | undefined {
   return undefined;
 }
 
-export function openItemInNewTab(item: RecordLabel): void {
-  const uuid = item._uuid;
+export function openItemInNewTab(item: LabelData): void {
+  const uuid = item.uuid;
   // save label data to session storage so it can be accessed from new tab
   window.sessionStorage.setItem(uuid, JSON.stringify(item));
   // open new tab to show label
