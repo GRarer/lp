@@ -6,6 +6,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import { CustomListIcon } from './CustomListIcon';
+import Uploader from './Uploader';
+import { fileToDataUrl } from '../service/persistence';
 
 
 type MenuProps = {
@@ -21,20 +23,14 @@ export class MenuBar extends React.Component<MenuProps, MenuBarState> {
   constructor(props: Readonly<MenuProps>) {
     super(props);
 
-    this.closeSettings = this.closeSettings.bind(this);
-
     this.state = {
       showSettings: false
     }
   }
 
-  closeSettings(): void {
-
-  }
-
   render(): JSX.Element {
       return (
-        <Fragment>
+        <>
           <AppBar position="static">
             <Toolbar>
               <Typography variant="h6" style={{flexGrow: 1}}>
@@ -58,7 +54,7 @@ export class MenuBar extends React.Component<MenuProps, MenuBarState> {
               />
             </DialogContent>
           </Dialog>
-        </Fragment>
+        </>
     );
   }
 
@@ -75,6 +71,8 @@ class SettingsEditor extends React.Component<SettingsEditorProps, Settings> {
       super(props);
 
       this.changeListIcon = this.changeListIcon.bind(this);
+      this.handleImageUpload = this.handleImageUpload.bind(this);
+      this.removeImage = this.removeImage.bind(this);
 
       this.state = props.prevSettings;
   }
@@ -83,9 +81,47 @@ class SettingsEditor extends React.Component<SettingsEditorProps, Settings> {
     this.setState({listIcon: value});
   }
 
+  private handleImageUpload(file: File): void {
+    fileToDataUrl(file).then(url => {
+      this.setState({imageDataUrl: url});
+      console.log(this.state);
+    }).catch(err => {
+      // TODO better error handling
+      console.error(err);
+    })
+  }
+
+  private removeImage(): void {
+    this.setState({imageDataUrl: undefined});
+  }
+
   render(): JSX.Element {
     return (
       <div>
+        <div style={{marginBottom: "5px"}}>
+          {
+
+            this.state.imageDataUrl
+              ?
+              <>
+                <Typography variant="h6">Custom Image</Typography>
+                <img src={this.state.imageDataUrl} style={{maxWidth: "2in", maxHeight: "2in"}}/>
+                <Button
+                  color="secondary"
+                  onClick={this.removeImage}
+                  style={{display: "block"}}
+                >
+                    Remove Custom Image
+                </Button>
+              </>
+              :
+              <Uploader
+                  onUpload={this.handleImageUpload}
+                  text="Upload Label Image"
+                  accept="image/*"
+              />
+          }
+        </div>
         <FormControl variant="filled" style={{width:"100%"}}>
           <InputLabel id="icon-select-label">List Icon</InputLabel>
           <Select
@@ -101,9 +137,9 @@ class SettingsEditor extends React.Component<SettingsEditorProps, Settings> {
         <div style={{marginTop:"10px"}}>
           <Button
             variant="contained" color="primary" style={{width:"100%"}}
-            onClick={()=>{this.props.onSave(this.state)}}
+            onClick={()=>{this.props.onSave(this.state);}}
           >
-            Save Settings
+            Save and Close
           </Button>
         </div>
       </div>

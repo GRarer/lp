@@ -63,7 +63,7 @@ export class Selector extends React.Component<SelectorProps, SelectorState> {
 
         return (
             <div>
-                <Typography variant="h5" style={{marginTop:"10px", marginBottom:"5px"}}>
+                <Typography variant="h5" style={{marginBottom:"5px"}}>
                     Select a label to print
                 </Typography>
                 <FormControl fullWidth variant="filled">

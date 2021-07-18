@@ -28,9 +28,14 @@ function hasValue(row: {name: string, value: string | undefined}): row is {name:
   return !!(row.value?.trim());
 }
 
-export class Label extends React.Component<{item: RecordLabel}> {
+export class Label extends React.Component<{item: RecordLabel, imageUrl?: string}> {
 
   render(): JSX.Element {
+
+    const image = this.props.imageUrl
+      ? <img src={this.props.imageUrl} style={{maxWidth: "2.5in"}}/>
+      : undefined;
+
     const item = this.props.item;
     const data: {name: string, value: string}[] = [
       {name: "Title", value: item.title},
@@ -47,11 +52,15 @@ export class Label extends React.Component<{item: RecordLabel}> {
     ].filter(hasValue);
 
     return (
-       <Table className="label" size="small">
-        <TableBody>
-          {data.map(x => labelRow(x))}
-        </TableBody>
-       </Table>
+
+       <div className="label" >
+         {image}
+         <Table size="small">
+          <TableBody>
+            {data.map(x => labelRow(x))}
+          </TableBody>
+        </Table>
+       </div>
     )
   }
 }

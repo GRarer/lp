@@ -21,7 +21,7 @@ ReactDOM.render(
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
     {
       itemFromUrl
-        ? <Label item={itemFromUrl} /> // display label page instead of app if an item was specified in url params
+        ? <Label item={itemFromUrl} imageUrl={initialSettings.imageDataUrl}/> // display label page instead of app if an item was specified in url params
         : <App defaultSettings={initialSettings}/>
     }
   </React.StrictMode>,

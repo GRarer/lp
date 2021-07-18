@@ -7,6 +7,7 @@ import { Selector } from './Selector';
 import { openItemInNewTab } from '../service/url';
 import { defaultSettings, Settings } from '../service/customization';
 import { loadStoredSettings, saveStoredSettings } from '../service/persistence';
+import { readSpreadsheet } from '../service/parse';
 
 // TODO remove fake data
 const fakeData: RecordLabel[] = [
@@ -78,9 +79,9 @@ export default class App extends React.Component<AppProps, AppState> {
     this.state = {
       settings: props.defaultSettings,
       showSettingsDialog: false,
-      // step: { step: "upload" }
+      step: { step: "upload" }
       // TODO remove fake data
-      step: {step: "select", items: fakeData}
+      //step: {step: "select", items: fakeData}
     };
   }
 
@@ -89,23 +90,36 @@ export default class App extends React.Component<AppProps, AppState> {
     saveStoredSettings(settings);
   }
 
-  private handleUpload(items: RecordLabel[]): void {
-    this.setState({
-      step: { step: "select", items }
-    });
+  private handleUpload(file: File): void {
+    file.arrayBuffer().then((buffer) => {
+      this.setState({
+        step: { step: "select", items: readSpreadsheet(buffer)}
+      });
+    }).catch(err => {
+      // TODO better error handling
+      console.error(err);
+    })
+
   }
 
   render(): JSX.Element {
     const currentStep = this.state.step;
     const currentStepControl = currentStep.step === "upload"
-      ? <Uploader onUpload={this.handleUpload}/>
+      ? <Uploader
+        onUpload={this.handleUpload}
+        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        text="Upload Spreadsheet"
+        />
       : <Selector items={currentStep.items} onSelect={openItemInNewTab} listIcon={this.state.settings.listIcon}/>
 
     return (
       <div>
         <MenuBar settings = {this.state.settings} onSaveSettings={this.updateSettings}/>
         <Container maxWidth="sm">
-          {currentStepControl}
+          <div style={{marginTop: "10px"}}>
+            {currentStepControl}
+          </div>
+
         </Container>
       </div>
     );

@@ -3,12 +3,14 @@ export const listIconOptionValues: ListIconOption[] = ["album",  "attachment",  
 
 export type Settings = {
     listIcon: ListIconOption;
+    imageDataUrl?: string;
 }
 
 export const defaultSettings: Settings = {
     listIcon: "label"
 }
 
+// TODO use augustus or something to simplify settings format validation
 export function isSettings(x: unknown): x is Settings {
     if (typeof x !== "object" || x == null) {
         return false;
@@ -17,5 +19,9 @@ export function isSettings(x: unknown): x is Settings {
     if (typeof obj.listIcon !== "string" || !(listIconOptionValues as string[]).includes(obj.listIcon)) {
         return false;
     }
+    if(obj.imageDataUrl !== undefined && typeof obj.imageDataUrl !== "string") {
+        return false;
+    }
+
     return true;
 }
