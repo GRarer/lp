@@ -1,18 +1,16 @@
-import React from "react";
+import React from 'react';
 import { Button } from '@material-ui/core';
-import { readSpreadsheet } from "../service/parse";
-import { RecordLabel } from "../service/model";
 import { v4 as generateUUID } from 'uuid';
 
 type UploaderProps = {
-  onUpload: (file: File) => void,
-  text: string,
-  accept: string,
-}
+  onUpload: (file: File) => void;
+  text: string;
+  accept: string;
+};
 
 type UploaderState = {
-  uniqueInputId: string
-}
+  uniqueInputId: string;
+};
 
 export default class Uploader extends React.Component<UploaderProps, UploaderState> {
   fileInput: React.RefObject<HTMLInputElement>;
@@ -22,24 +20,25 @@ export default class Uploader extends React.Component<UploaderProps, UploaderSta
     this.fileInput = React.createRef();
 
     // we need an id to match labels with input buttons, and it must be unique to each uploader instance
-    this.state = {uniqueInputId: `file-input-${generateUUID()}`}
+    this.state = { uniqueInputId: `file-input-${generateUUID()}` };
   }
-  handleSubmit() {
+
+  handleSubmit(): void {
     const currentInput = this.fileInput.current;
     if (currentInput === null) {
-      alert("file not found!"); // TODO in-app modal instead of alert
+      alert('file not found!'); // TODO in-app modal instead of alert
       return;
     }
     const file = currentInput.files?.[0];
     if (!file) {
-      alert("file not found!"); // TODO in-app modal instead of alert
+      alert('file not found!'); // TODO in-app modal instead of alert
       return;
     }
-    currentInput.value="";
+    currentInput.value = '';
     this.props.onUpload(file);
   }
 
-  render() {
+  render(): JSX.Element {
     return (
       <>
         <input
@@ -48,16 +47,18 @@ export default class Uploader extends React.Component<UploaderProps, UploaderSta
           id={this.state.uniqueInputId}
           type="file"
           ref={this.fileInput}
-          onInput={()=>{this.handleSubmit()}}
+          onInput={() => { this.handleSubmit(); }}
         />
         <label htmlFor={this.state.uniqueInputId}>
-          <Button style={{width: "100%"}}
-            variant="contained" component="span"
+          <Button
+            style={{ width: '100%' }}
+            variant="contained"
+            component="span"
           >
             {this.props.text}
           </Button>
         </label>
       </>
-      );
-    }
+    );
   }
+}
