@@ -6,10 +6,10 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import { ListIconOption, listIconOptionValues, Settings } from '../service/customization';
-import { CustomListIcon } from './CustomListIcon';
-import Uploader from './Uploader';
-import { fileToDataUrl } from '../service/persistence';
+import { ListIconOption, listIconOptionValues, Settings } from '../../service/customization';
+import { CustomListIcon } from '../common/CustomListIcon';
+import Uploader from '../common/Uploader';
+import { fileToDataUrl } from '../../service/persistence';
 
 type SettingsEditorProps = {
   prevSettings: Settings;

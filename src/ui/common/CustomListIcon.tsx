@@ -1,7 +1,7 @@
 import {
   Album, Attachment, Book, Label, Note,
 } from '@material-ui/icons';
-import { ListIconOption } from '../service/customization';
+import { ListIconOption } from '../../service/customization';
 import React from 'react';
 
 export function CustomListIcon(props: {icon: ListIconOption;}): JSX.Element {

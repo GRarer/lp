@@ -1,9 +1,9 @@
 import React from 'react';
 import { Container } from '@material-ui/core';
-import { MenuBar } from './Menu';
-import Uploader from './Uploader';
+import { MenuBar } from './menu/Menu';
+import Uploader from './common/Uploader';
 import { LabelData } from '../service/model';
-import { Selector } from './Selector';
+import { Selector } from './selection/Selector';
 import { openItemInNewTab } from '../service/url';
 import { Settings } from '../service/customization';
 import { saveStoredSettings } from '../service/persistence';

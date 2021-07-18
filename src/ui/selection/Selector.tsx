@@ -6,9 +6,9 @@ import ClearIcon from '@material-ui/icons/Clear';
 import FilledInput from '@material-ui/core/FilledInput';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
-import { LabelData } from '../service/model';
-import { ListIconOption } from '../service/customization';
-import { CustomListIcon } from './CustomListIcon';
+import { LabelData } from '../../service/model';
+import { ListIconOption } from '../../service/customization';
+import { CustomListIcon } from '../common/CustomListIcon';
 
 type SelectorProps = {
   items: LabelData[];
