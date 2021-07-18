@@ -6,8 +6,8 @@ import reportWebVitals from './reportWebVitals';
 import { getItemFromUrlParam } from './service/url';
 import { RecordLabel } from './service/model';
 import { Label } from './ui/label/Label';
-import {loadStoredSettings} from './service/persistence';
-import {defaultSettings} from './service/customization';
+import { loadStoredSettings } from './service/persistence';
+import { defaultSettings } from './service/customization';
 
 // check whether current tab is a label opened from another tab
 const itemFromUrl: RecordLabel | undefined = getItemFromUrlParam();
@@ -21,8 +21,10 @@ ReactDOM.render(
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
     {
       itemFromUrl
-        ? <Label item={itemFromUrl} imageUrl={initialSettings.imageDataUrl}/> // display label page instead of app if an item was specified in url params
-        : <App defaultSettings={initialSettings}/>
+        // display label page instead of app if an item was specified in url params
+        ? <Label item={itemFromUrl} imageUrl={initialSettings.imageDataUrl} />
+        // otherwise display the main app
+        : <App defaultSettings={initialSettings} />
     }
   </React.StrictMode>,
   document.getElementById('root'),
