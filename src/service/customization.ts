@@ -10,7 +10,6 @@ export const defaultSettings: Settings = {
   listIcon: 'label',
 };
 
-// TODO use augustus or something to simplify settings format validation
 export function isSettings(x: unknown): x is Settings {
   if (typeof x !== 'object' || x === null) {
     return false;

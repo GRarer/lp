@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button } from '@material-ui/core';
+import { Button, Snackbar } from '@material-ui/core';
 import { v4 as generateUUID } from 'uuid';
+import MuiAlert from '@material-ui/lab/Alert';
 
 type UploaderProps = {
   onUpload: (file: File) => void;
@@ -10,6 +11,7 @@ type UploaderProps = {
 
 type UploaderState = {
   uniqueInputId: string;
+  errorSnackbarMessage: string | undefined;
 };
 
 export default class Uploader extends React.Component<UploaderProps, UploaderState> {
@@ -20,22 +22,25 @@ export default class Uploader extends React.Component<UploaderProps, UploaderSta
     this.fileInput = React.createRef();
 
     // we need an id to match labels with input buttons, and it must be unique to each uploader instance
-    this.state = { uniqueInputId: `file-input-${generateUUID()}` };
+    this.state = { uniqueInputId: `file-input-${generateUUID()}`, errorSnackbarMessage: undefined };
   }
 
-  handleSubmit(): void {
+  private handleSubmit(): void {
     const currentInput = this.fileInput.current;
     if (currentInput === null) {
-      alert('file not found!'); // TODO in-app modal instead of alert
       return;
     }
     const file = currentInput.files?.[0];
     if (!file) {
-      alert('file not found!'); // TODO in-app modal instead of alert
+      this.setState({errorSnackbarMessage: "File not found!"})
       return;
     }
     currentInput.value = '';
     this.props.onUpload(file);
+  }
+
+  private dismissError(): void {
+    this.setState({errorSnackbarMessage: undefined});
   }
 
   render(): JSX.Element {
@@ -58,6 +63,14 @@ export default class Uploader extends React.Component<UploaderProps, UploaderSta
             {this.props.text}
           </Button>
         </label>
+        <Snackbar
+          open={!!this.state.errorSnackbarMessage}
+          autoHideDuration={6000}
+          onClose={()=>{this.dismissError()}}>
+          <MuiAlert elevation={6} variant="filled" onClose={() => {this.dismissError()}} severity="error">
+            {this.state.errorSnackbarMessage}
+          </MuiAlert>
+        </Snackbar>
       </>
     );
   }

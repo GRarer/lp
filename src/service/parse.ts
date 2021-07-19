@@ -68,17 +68,16 @@ export function readSpreadsheet(fileContents: ArrayBuffer): LabelData[] {
   const workbook = XLSX.read(fileContents, { type: 'array' });
   const mainSheet = workbook.Sheets[workbook.SheetNames[0]];
 
-
   const data: SheetRow[] = XLSX.utils.sheet_to_json(mainSheet, { raw: false, blankrows: false });
   // parse rows based on expected column names
   const headers = XLSX.utils.sheet_to_json(mainSheet, { header: 1 })[0];
   if (!Array.isArray(headers) || !headers.every((x): x is string => typeof x === 'string')) {
-    throw 'unexpected parse result'; // TODO error handling
+    throw 'Error: Unexpected parse result';
   }
   const titleColName: string | undefined = headers[0];
   const subtitleColName: string | undefined = headers[1];
   if (typeof titleColName === 'undefined') {
-    throw 'First column not found'; // TODO error handling
+    throw 'Error: Spreadsheet is missing first column';
   }
 
   const colMap: Map<string, ColumnMetadata> = new Map(headers.map(header => [header, extractColumnMetadata(header)]));

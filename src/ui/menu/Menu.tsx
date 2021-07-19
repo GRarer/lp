@@ -1,5 +1,5 @@
 import {
-  AppBar, Button, Dialog, DialogContent, DialogTitle, FormControl, IconButton, Toolbar, Typography,
+  AppBar, Button, Dialog, DialogContent, DialogTitle, FormControl, IconButton, Snackbar, Toolbar, Typography,
 } from '@material-ui/core';
 import React from 'react';
 import SettingsIcon from '@material-ui/icons/Settings';
@@ -11,10 +11,12 @@ import { ListIconOption, listIconOptionValues, Settings } from '../../service/cu
 import { CustomListIcon } from '../common/CustomListIcon';
 import Uploader from '../common/Uploader';
 import { fileToDataUrl } from '../../service/persistence';
+import MuiAlert from '@material-ui/lab/Alert';
 
 type SettingsEditorProps = {
   prevSettings: Settings;
   onSave: (settings: Settings) => void;
+  changeMenuError: (message: string) => void;
 };
 
 class SettingsEditor extends React.Component<SettingsEditorProps, Settings> {
@@ -32,8 +34,8 @@ class SettingsEditor extends React.Component<SettingsEditorProps, Settings> {
       this.setState({ imageDataUrl: url });
       console.log(this.state);
     }).catch((err) => {
-      // TODO better error handling
       console.error(err);
+      this.props.changeMenuError("Error: could not read file");
     });
   }
 
@@ -105,6 +107,7 @@ type MenuProps = {
 type MenuBarState = {
   showSettings: boolean;
   showHelp: boolean;
+  errorSnackbarMessage: string | undefined;
 };
 
 export class MenuBar extends React.Component<MenuProps, MenuBarState> {
@@ -113,7 +116,8 @@ export class MenuBar extends React.Component<MenuProps, MenuBarState> {
 
     this.state = {
       showSettings: false,
-      showHelp: true // TODO set to false,
+      showHelp: false,
+      errorSnackbarMessage: undefined,
     };
   }
 
@@ -152,6 +156,7 @@ export class MenuBar extends React.Component<MenuProps, MenuBarState> {
                 this.setState({ showSettings: false });
                 this.props.onSaveSettings(settings);
               }}
+              changeMenuError={(message)=>{this.setState({errorSnackbarMessage: message})}}
             />
           </DialogContent>
         </Dialog>
@@ -209,6 +214,17 @@ export class MenuBar extends React.Component<MenuProps, MenuBarState> {
               </Button>
           </DialogContent>
         </Dialog>
+        <Snackbar
+          open={!!this.state.errorSnackbarMessage}
+          autoHideDuration={6000}
+          onClose={()=>{this.setState({errorSnackbarMessage: undefined})}}>
+          <MuiAlert
+            elevation={6} variant="filled"
+            onClose={()=>{this.setState({errorSnackbarMessage: undefined})}} severity="error"
+          >
+            {this.state.errorSnackbarMessage}
+          </MuiAlert>
+        </Snackbar>
       </>
     );
   }

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Container } from '@material-ui/core';
+import { Container, Snackbar} from '@material-ui/core';
+import MuiAlert from '@material-ui/lab/Alert';
 import { MenuBar } from './menu/Menu';
 import Uploader from './common/Uploader';
 import { LabelData } from '../service/model';
@@ -12,6 +13,7 @@ import { readSpreadsheet } from '../service/parse';
 type AppState = {
   items?: LabelData[];
   settings: Settings;
+  errorSnackbarMessage: string | undefined;
 };
 
 type AppProps = {
@@ -24,9 +26,8 @@ export default class App extends React.Component<AppProps, AppState> {
 
     this.state = {
       settings: props.defaultSettings,
-      items: undefined
-      // TODO remove fake data
-      // step: {step: "select", items: fakeData}
+      items: undefined,
+      errorSnackbarMessage: undefined
     };
   }
 
@@ -39,9 +40,14 @@ export default class App extends React.Component<AppProps, AppState> {
     file.arrayBuffer().then((buffer) => {
       this.setState({ items: readSpreadsheet(buffer) });
     }).catch((err) => {
-      // TODO better error handling
       console.error(err);
+      const message = typeof err === "string" ? err : "Error: Unable to process file";
+      this.setState({errorSnackbarMessage: message});
     });
+  }
+
+  private dismissError(): void {
+    this.setState({errorSnackbarMessage: undefined});
   }
 
   render(): JSX.Element {
@@ -64,6 +70,14 @@ export default class App extends React.Component<AppProps, AppState> {
             {currentStepControl}
           </div>
         </Container>
+        <Snackbar
+          open={!!this.state.errorSnackbarMessage}
+          autoHideDuration={6000}
+          onClose={()=>{this.dismissError()}}>
+          <MuiAlert elevation={6} variant="filled" onClose={() => {this.dismissError()}} severity="error">
+            {this.state.errorSnackbarMessage}
+          </MuiAlert>
+        </Snackbar>
       </div>
     );
   }
