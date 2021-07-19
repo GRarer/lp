@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Snackbar} from '@material-ui/core';
+import { Container, Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import { MenuBar } from './menu/Menu';
 import Uploader from './common/Uploader';
@@ -41,13 +41,13 @@ export default class App extends React.Component<AppProps, AppState> {
       this.setState({ items: readSpreadsheet(buffer) });
     }).catch((err) => {
       console.error(err);
-      const message = typeof err === "string" ? err : "Error: Unable to process file";
-      this.setState({errorSnackbarMessage: message});
+      const message = typeof err === 'string' ? err : 'Error: Unable to process file';
+      this.setState({ errorSnackbarMessage: message });
     });
   }
 
   private dismissError(): void {
-    this.setState({errorSnackbarMessage: undefined});
+    this.setState({ errorSnackbarMessage: undefined });
   }
 
   render(): JSX.Element {
@@ -73,8 +73,8 @@ export default class App extends React.Component<AppProps, AppState> {
         <Snackbar
           open={!!this.state.errorSnackbarMessage}
           autoHideDuration={6000}
-          onClose={()=>{this.dismissError()}}>
-          <MuiAlert elevation={6} variant="filled" onClose={() => {this.dismissError()}} severity="error">
+          onClose={()=>{ this.dismissError(); }}>
+          <MuiAlert elevation={6} variant="filled" onClose={() => { this.dismissError(); }} severity="error">
             {this.state.errorSnackbarMessage}
           </MuiAlert>
         </Snackbar>

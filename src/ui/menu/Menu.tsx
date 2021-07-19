@@ -35,7 +35,7 @@ class SettingsEditor extends React.Component<SettingsEditorProps, Settings> {
       console.log(this.state);
     }).catch((err) => {
       console.error(err);
-      this.props.changeMenuError("Error: could not read file");
+      this.props.changeMenuError('Error: could not read file');
     });
   }
 
@@ -156,71 +156,71 @@ export class MenuBar extends React.Component<MenuProps, MenuBarState> {
                 this.setState({ showSettings: false });
                 this.props.onSaveSettings(settings);
               }}
-              changeMenuError={(message)=>{this.setState({errorSnackbarMessage: message})}}
+              changeMenuError={(message)=>{ this.setState({ errorSnackbarMessage: message }); }}
             />
           </DialogContent>
         </Dialog>
         <Dialog open={this.state.showHelp} maxWidth="lg">
           <DialogTitle>About</DialogTitle>
-          <DialogContent style={{width:"6in"}}>
-              <Typography variant="h6">
+          <DialogContent style={{ width:'6in' }}>
+            <Typography variant="h6">
                 How To Use
-              </Typography>
-              <ol>
-                <li>
+            </Typography>
+            <ol>
+              <li>
                   Record your items as an Excel spreadsheet (.XLSX file).
-                </li>
-                <li>Upload your spreadsheet.</li>
-                <li>Select one or more items that you want to print labels for. Each label will open in a new tab.</li>
-                <li>Print the label from your web browser.</li>
-              </ol>
-              <Typography variant="h6">
+              </li>
+              <li>Upload your spreadsheet.</li>
+              <li>Select one or more items that you want to print labels for. Each label will open in a new tab.</li>
+              <li>Print the label from your web browser.</li>
+            </ol>
+            <Typography variant="h6">
                 How To Format Your Spreadsheet
-              </Typography>
-              <ul>
-                <li>
+            </Typography>
+            <ul>
+              <li>
                   If your file has multiple sheets, the data you want to print should be in the first sheet.
-                </li>
-                <li>
+              </li>
+              <li>
                   The first row of your sheet should be the header row. This contains the names of the attributes stored
                   in each column. Every other row should represent one item in your list.
-                </li>
-                <li>
+              </li>
+              <li>
                   The first two columns are what will be shown in the list when you select which items to print.
                   You may want these first two columns to be the title and subtitle, album name and artist name, etc.
-                </li>
-                <li>
-                  You can control how a column's data will be displayed by adding keywords in brackets to the header of that
-                  column.
-                  <ul>
-                    <li>
-                      <code>[label:skip]</code> - this column will not be shown on the labels.
-                    </li>
-                    <li>
-                      <code>[label:5_stars]</code> - this column will be shown as a score out of 5 stars.
+              </li>
+              <li>
+                  You can control how a column&aposs data will be displayed by adding keywords in brackets to the header
+                  of that column.
+                <ul>
+                  <li>
+                    <code>[label:skip]</code> - this column will not be shown on the labels.
+                  </li>
+                  <li>
+                    <code>[label:5_stars]</code> - this column will be shown as a score out of 5 stars.
                       The values in this column should be numbers from 0 to 5 in increments of 0.5
-                      (e.g. "0", "2.5", and "5" are all valid values).
-                    </li>
-                    <li>
-                      <code>[label:10_stars]</code> - this column will be shown as a score out of 10 stars.
-                    </li>
-                  </ul>
-                  For example, if column D stores "id number" values that you do not want to show on the labels,
-                  cell D1 should be set to: <code>id number [label:skip]</code>
-                </li>
-              </ul>
-              <Button variant="contained" onClick={()=>{this.setState({showHelp: false})}}>
+                      (e.g. &quot;0&quot;, &quot;2.5&quot;, and &quot;5&quot; are all valid values).
+                  </li>
+                  <li>
+                    <code>[label:10_stars]</code> - this column will be shown as a score out of 10 stars.
+                  </li>
+                </ul>
+                  For example, if column D stores &quot;id number&quot; values that you do not want to show on the
+                  labels, cell D1 should be set to: <code>id number [label:skip]</code>
+              </li>
+            </ul>
+            <Button variant="contained" onClick={()=>{ this.setState({ showHelp: false }); }}>
                 Close
-              </Button>
+            </Button>
           </DialogContent>
         </Dialog>
         <Snackbar
           open={!!this.state.errorSnackbarMessage}
           autoHideDuration={6000}
-          onClose={()=>{this.setState({errorSnackbarMessage: undefined})}}>
+          onClose={()=>{ this.setState({ errorSnackbarMessage: undefined }); }}>
           <MuiAlert
             elevation={6} variant="filled"
-            onClose={()=>{this.setState({errorSnackbarMessage: undefined})}} severity="error"
+            onClose={()=>{ this.setState({ errorSnackbarMessage: undefined }); }} severity="error"
           >
             {this.state.errorSnackbarMessage}
           </MuiAlert>

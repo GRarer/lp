@@ -32,7 +32,7 @@ export default class Uploader extends React.Component<UploaderProps, UploaderSta
     }
     const file = currentInput.files?.[0];
     if (!file) {
-      this.setState({errorSnackbarMessage: "File not found!"})
+      this.setState({ errorSnackbarMessage: 'File not found!' });
       return;
     }
     currentInput.value = '';
@@ -40,7 +40,7 @@ export default class Uploader extends React.Component<UploaderProps, UploaderSta
   }
 
   private dismissError(): void {
-    this.setState({errorSnackbarMessage: undefined});
+    this.setState({ errorSnackbarMessage: undefined });
   }
 
   render(): JSX.Element {
@@ -66,8 +66,8 @@ export default class Uploader extends React.Component<UploaderProps, UploaderSta
         <Snackbar
           open={!!this.state.errorSnackbarMessage}
           autoHideDuration={6000}
-          onClose={()=>{this.dismissError()}}>
-          <MuiAlert elevation={6} variant="filled" onClose={() => {this.dismissError()}} severity="error">
+          onClose={()=>{ this.dismissError(); }}>
+          <MuiAlert elevation={6} variant="filled" onClose={() => { this.dismissError(); }} severity="error">
             {this.state.errorSnackbarMessage}
           </MuiAlert>
         </Snackbar>
