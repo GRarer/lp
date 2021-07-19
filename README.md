@@ -1,46 +1,27 @@
-# Getting Started with Create React App
+# LP: Label Printer
+A simple tool for converting excel spreadsheet rows into printable labels. I built this for my dad's record collection,
+but you can use it for anything where you've got a table of items that need nice-looking labels.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Self-contained webapp coming to GitHub pages soon.
 
-## Available Scripts
+## How To Use
 
-In the project directory, you can run:
+1. Record your items as an Excel spreadsheet (.XLSX file).
+2. Upload your spreadsheet.
+3. Select one or more items that you want to print labels for. Each label will open in a new tab.
+4. Print the label from your web browser.
 
-### `npm start`
+## How To Format Your Spreadsheet
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- If your file has multiple sheets, the data you want to print should be in the first sheet.
+- The first row of your sheet should be the header row. This contains the names of the attributes stored
+in each column. Every other row should represent one item in your list.
+-  The first two columns are what will be shown in the list when you select which items to print.
+You may want these first two columns to be the title and subtitle, album name and artist name, etc.
+- You can control how a column's data will be displayed by adding keywords in brackets to the header of that column.
+    - `[label:skip]` - this column will not be shown on the labels.
+    - `[label:5_stars]` - this column will be shown as a score out of 5 stars. The values in this column should be
+    numbers from 0 to 5 in increments of 0.5 (e.g. "0", "2.5", and "5" are all valid values).
+    - `[label:10_stars]` - this column will be shown as a score out of 10 stars.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+    For example, if column D stores "id number" values that you do not want to show on the labels, cell D1 should be set to: <code>id number [label:skip]</code>
