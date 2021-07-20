@@ -120,14 +120,13 @@ export class MenuBar extends React.Component<MenuProps, MenuBarState> {
     };
   }
 
-  // TODO improve appearance and styling
   render(): JSX.Element {
     return (
       <>
         <AppBar position="static">
           <Toolbar>
             <Typography variant="h6" style={{ flexGrow: 1 }}>
-              Label Manager
+              LP Label Printer
             </Typography>
             <IconButton
               edge="end"
