@@ -32,7 +32,6 @@ class SettingsEditor extends React.Component<SettingsEditorProps, Settings> {
   private handleImageUpload(file: File): void {
     fileToDataUrl(file).then((url) => {
       this.setState({ imageDataUrl: url });
-      console.log(this.state);
     }).catch((err) => {
       console.error(err);
       this.props.changeMenuError('Error: could not read file');
@@ -121,6 +120,7 @@ export class MenuBar extends React.Component<MenuProps, MenuBarState> {
     };
   }
 
+  // TODO improve appearance and styling
   render(): JSX.Element {
     return (
       <>

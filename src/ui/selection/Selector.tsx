@@ -56,8 +56,6 @@ export class Selector extends React.Component<SelectorProps, SelectorState> {
       </ListItem>
     ));
 
-    console.log(rows);
-
     return (
       <div>
         <Typography variant="h5" style={{ marginBottom: '5px' }}>

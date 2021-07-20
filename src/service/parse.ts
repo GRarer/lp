@@ -82,7 +82,5 @@ export function readSpreadsheet(fileContents: ArrayBuffer): LabelData[] {
 
   const colMap: Map<string, ColumnMetadata> = new Map(headers.map(header => [header, extractColumnMetadata(header)]));
 
-  const result = data.map(row => makeItem(row, colMap, titleColName, subtitleColName));
-  console.log(result);
-  return result;
+  return data.map(row => makeItem(row, colMap, titleColName, subtitleColName));
 }

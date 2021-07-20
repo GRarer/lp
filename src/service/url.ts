@@ -1,4 +1,5 @@
-import { LabelData, } from './model';
+import { LabelData, labelDataSchema, } from './model';
+import { jsonEncodeWith, jsonDecodeWith } from '@nprindle/augustus';
 
 const itemUUIDSearchKey = 'item';
 
@@ -9,9 +10,14 @@ export function getItemFromUrlParam(): LabelData | undefined {
     return undefined;
   }
   const json = window.sessionStorage.getItem(uuid);
-  // TODO validate format of loaded json
   if (json) {
-    return JSON.parse(json);
+    const result = jsonDecodeWith(json, labelDataSchema);
+    if (result.resultType === 'success') {
+      return result.result;
+    } else {
+      console.error(result); // TODO show error to user
+      return undefined;
+    }
   }
   return undefined;
 }
@@ -19,7 +25,7 @@ export function getItemFromUrlParam(): LabelData | undefined {
 export function openItemInNewTab(item: LabelData): void {
   const uuid = item.uuid;
   // save label data to session storage so it can be accessed from new tab
-  window.sessionStorage.setItem(uuid, JSON.stringify(item));
+  window.sessionStorage.setItem(uuid, jsonEncodeWith(item, labelDataSchema));
   // open new tab to show label
   const url = new URL(window.location.href);
   url.search = (new URLSearchParams({ [itemUUIDSearchKey]: uuid })).toString();

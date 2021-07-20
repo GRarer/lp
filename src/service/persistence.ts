@@ -1,32 +1,24 @@
-import { isSettings, Settings } from './customization';
+import { jsonDecodeWith, jsonEncodeWith } from '@nprindle/augustus';
+import { Settings, settingsSchema } from './customization';
 
 const settingsLSKey = 'customization_settings';
 
 export function loadStoredSettings(): Settings | undefined {
-  const startTime = new Date().getTime();
   const saved = window.localStorage.getItem(settingsLSKey);
   if (!saved) {
     return undefined;
   }
-  try {
-    // TODO better format validation
-    const result: unknown = JSON.parse(saved);
-    if (isSettings(result)) {
-      console.log('loaded settings after time: ', new Date().getTime() - startTime);
-      console.log(result);
-      return result;
-    }
-    return undefined;
-  } catch (err) {
-    console.error(err);
+  const result = jsonDecodeWith(saved, settingsSchema);
+  if (result.resultType === 'success') {
+    return result.result;
+  } else {
+    console.error(result);
     return undefined;
   }
 }
 
 export function saveStoredSettings(settings: Settings): void {
-  const startTime = new Date().getTime();
-  window.localStorage.setItem(settingsLSKey, JSON.stringify(settings));
-  console.log('saved settings after time: ', new Date().getTime() - startTime);
+  window.localStorage.setItem(settingsLSKey, jsonEncodeWith(settings, settingsSchema));
 }
 
 export async function fileToDataUrl(file: File): Promise<string> {
