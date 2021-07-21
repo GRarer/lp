@@ -16,7 +16,7 @@ export type Settings = {
 
 export const settingsSchema: Schema<Settings, Settings> = S.recordOf({
   listIcon: listIconOptionSchema,
-  ImageDataUrl: S.optional(S.aString)
+  imageDataUrl: S.optional(S.aString)
 });
 
 export const defaultSettings: Settings = {
