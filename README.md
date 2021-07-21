@@ -2,7 +2,7 @@
 A simple tool for converting excel spreadsheet rows into printable labels. I built this for my dad's record collection,
 but you can use it for anything where you've got a table of items that need nice-looking labels.
 
-Self-contained webapp coming to GitHub pages soon.
+You can use it at https://grarer.github.io/lp
 
 ## How To Use
 

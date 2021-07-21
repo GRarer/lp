@@ -208,6 +208,14 @@ export class MenuBar extends React.Component<MenuProps, MenuBarState> {
                   labels, cell D1 should be set to: <code>id number [label:skip]</code>
               </li>
             </ul>
+            <Typography variant="h6">
+                About
+            </Typography>
+            <p>Copyright 2021 Grace Rarer</p>
+            <p>
+              The source code is available under the MIT License
+              at <a href="https://github.com/grarer/lp">https://github.com/grarer/lp</a>
+            </p>
             <Button variant="contained" onClick={()=>{ this.setState({ showHelp: false }); }}>
                 Close
             </Button>
